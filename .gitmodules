@@ -1,0 +1,3 @@
+[submodule "telegramCloud"]
+	path = telegramCloud
+	url = https://github.com/m18n/telegramCloud.git
