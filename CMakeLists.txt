@@ -21,10 +21,11 @@ if (MSVC)
 else()
     link_directories("ultralight/bin")  
 endif()
+
 add_subdirectory(telegramCloud)
 add_executable(${APP_NAME} WIN32 MACOSX_BUNDLE ${CPPS})
+file(COPY "assets" DESTINATION "./")
 target_link_libraries(${APP_NAME} PRIVATE TelegramCloud)
 # Copy all binaries to target directory
 add_custom_command(TARGET ${APP_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory "../../ultralight/bin" $<TARGET_FILE_DIR:${APP_NAME}>)  
-
+    COMMAND ${CMAKE_COMMAND} -E copy_directory  "../../ultralight/bin" $<TARGET_FILE_DIR:${APP_NAME}>)  
