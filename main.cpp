@@ -1,15 +1,19 @@
 #include <AppCore/App.h>
 #include <AppCore/Window.h>
 #include <AppCore/Overlay.h>
-
+#include <Ultralight/View.h>
+#include <Ultralight/Renderer.h>
+#include <AppCore/JSHelpers.h>
+ 
+#include <iostream>
+#include <fstream>
 using namespace ultralight;
 
-const char* htmlString_LeftPane();
-const char* htmlString_RightPane();
+const char *htmlString_LeftPane();
+const char *htmlString_RightPane();
 
-#define WINDOW_WIDTH    900
-#define WINDOW_HEIGHT   600
-#define LEFT_PANE_WIDTH 200
+#define WINDOW_WIDTH 900
+#define WINDOW_HEIGHT 600
 
 ///
 /// Welcome to Sample 3!
@@ -35,30 +39,49 @@ const char* htmlString_RightPane();
 ///    |               |                                    |
 ///    |               |                                    |
 ///    +----------------------------------------------------+
-/// 
+///
 /// To respond to resize events, we'll attach a WindowListener to our window
 /// and re-calculate layout of our overlays in the OnResize callback.
 ///
 
 class MyApp : public WindowListener,
-              public ViewListener {
+              public ViewListener
+{
   RefPtr<App> app_;
   RefPtr<Window> window_;
-  RefPtr<Overlay> left_pane_;
-  RefPtr<Overlay> right_pane_;
+  RefPtr<Overlay> one;
+
+  
 public:
-  MyApp() {
+  std::string LoadFile(std::string namefile)
+  {
+    std::streampos begin, end;
+    std::ifstream myfile("site/"+namefile, std::ios::binary);
+    begin = myfile.tellg();
+    myfile.seekg(0, std::ios::end);
+    end = myfile.tellg();
+    myfile.close();
+    int size = end - begin;
+    std::string file;
+    file.resize(size);
+    std::ifstream myfile2("site/"+namefile);
+    myfile2.read(&file[0],size);
+    myfile2.close();
+    return std::move(file);
+  }
+  MyApp()
+  {
     ///
     /// Create our main App instance.
     ///
     app_ = App::Create();
-
+  
     ///
     /// Create a resizable window by passing by OR'ing our window flags with
     /// kWindowFlags_Resizable.
     ///
     window_ = Window::Create(app_->main_monitor(), WINDOW_WIDTH, WINDOW_HEIGHT,
-      false, kWindowFlags_Titled | kWindowFlags_Resizable);
+                             false, kWindowFlags_Titled | kWindowFlags_Resizable);
 
     ///
     /// Set the title of our window.
@@ -77,8 +100,8 @@ public:
     /// their initial size and position because they'll be set when we call
     /// OnResize() below.
     ///
-    left_pane_ = Overlay::Create(*window_.get(), 1, 1, 0, 0);
-    right_pane_ = Overlay::Create(*window_.get(), 1, 1, 0, 0);
+    one = Overlay::Create(*window_.get(), 1, 1, 0, 0);
+
 
     ///
     /// Force a call to OnResize to perform initial layout and sizing of our
@@ -89,10 +112,10 @@ public:
     ///
     /// Load some HTML into our left and right overlays.
     ///
-    left_pane_->view()->LoadHTML(htmlString_LeftPane());
-    right_pane_->view()->LoadHTML(htmlString_RightPane());
-
-    ///
+    
+    //one->view()->LoadHTML(LoadFile("index.html").c_str());
+    one->view()->LoadURL("file:///index.html");
+    
     /// Register our MyApp instance as a WindowListener so we can handle the
     /// Window's OnResize event below.
     ///
@@ -102,8 +125,8 @@ public:
     /// Register our MyApp instance as a ViewListener so we can handle the
     /// Views' OnChangeCursor event below.
     ///
-    left_pane_->view()->set_view_listener(this);
-    right_pane_->view()->set_view_listener(this);
+    one->view()->set_view_listener(this);
+   
   }
 
   virtual ~MyApp() {}
@@ -116,43 +139,37 @@ public:
   ///
   /// Inherited from WindowListener, called when the Window is resized.
   ///
-  virtual void OnResize(uint32_t width, uint32_t height) override {
-    uint32_t left_pane_width_px = window_->DeviceToPixels(LEFT_PANE_WIDTH);
-    left_pane_->Resize(left_pane_width_px, height);
+  virtual void OnResize(uint32_t width, uint32_t height) override
+  {
+    one->Resize(width, height);
 
-    // Calculate the width of our right pane (window width - left width)
-    int right_pane_width = (int)width - left_pane_width_px;
-
-    // Clamp our right pane's width to a minimum of 1
-    right_pane_width = right_pane_width > 1 ? right_pane_width: 1;
-
-    right_pane_->Resize((uint32_t)right_pane_width, height);
-
-    left_pane_->MoveTo(0, 0);
-    right_pane_->MoveTo(left_pane_width_px, 0);
   }
 
   ///
   /// Inherited from ViewListener, called when the Cursor changes.
   ///
-  virtual void OnChangeCursor(ultralight::View* caller,
-    Cursor cursor) {
+  virtual void OnChangeCursor(ultralight::View *caller,
+                              Cursor cursor)
+  {
     window_->SetCursor(cursor);
   }
 
-  void Run() {
+  void Run()
+  {
     app_->Run();
   }
 };
 
-int main() {
+int main()
+{
   MyApp app;
   app.Run();
 
   return 0;
 }
 
-const char* htmlString_LeftPane() {
+const char *htmlString_LeftPane()
+{
   return R"(
 <html>
   <head>
@@ -290,7 +307,8 @@ const char* htmlString_LeftPane() {
 )";
 }
 
-const char* htmlString_RightPane() {
+const char *htmlString_RightPane()
+{
   return R"(
 <html>
   <head>
@@ -333,6 +351,7 @@ const char* htmlString_RightPane() {
       transition: top 0.15s ease-out, box-shadow 0.15s ease-out;
     }
     #message:hover {
+      cursor:pointer;
       top: 49%;
       box-shadow: 0 35px 35px -20px #d3d5d9;
     }
