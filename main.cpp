@@ -30,10 +30,10 @@ int main() {
   auto app = App::Create();
  
   // Create a 450 x 700 pixels window, with a title
-  auto window = Window::Create(app->main_monitor(), 450, 700, false,
+  auto window = Window::Create(app->main_monitor(), 1000, 700, false,
     kWindowFlags_Titled);
  
-  window->SetTitle("Hi Ultralight here!");
+  window->SetTitle("TelegramGUI");
  
   app->set_window(window);
     
