@@ -2,45 +2,111 @@
 #include <AppCore/Window.h>
 #include <AppCore/Overlay.h>
 #include <AppCore/JSHelpers.h>
- 
+#include<iostream>
 using namespace ultralight;
- 
-class UltralightMain:public WindowListener {
-  RefPtr<Overlay> overlay;
-public:
-  UltralightMain(Ref<Window> win) {
-    
- // Create a basic window
-    overlay = Overlay::Create(win, win->width(), win->height(), 0, 0);
- 
- // Load its content from file
- // All the files must be put into the assets folder, then you can create other subdirectories and all you need
-    
-    overlay->view()->LoadURL("file:///index.html");
+JSValueRef CNz(JSContextRef ctx, JSObjectRef function,
+                           JSObjectRef thisObject, size_t argumentCount,
+                           const JSValueRef arguments[], JSValueRef *exception)
+  {
+
+    std::cout<<"NZ";
+
+    return JSValueMakeNull(ctx);
   }
-  virtual void OnResize(uint32_t width, uint32_t height) override {
-    overlay->Resize(width,height);
+
+JSValueRef CVp(JSContextRef ctx, JSObjectRef function,
+                           JSObjectRef thisObject, size_t argumentCount,
+                           const JSValueRef arguments[], JSValueRef *exception)
+  {
+
+    std::cout<<"NZ";
+
+    return JSValueMakeNull(ctx);
+  }
+class UltralightMain : public WindowListener,public LoadListener
+{
+  RefPtr<Overlay> overlay;
+
+public:
+  UltralightMain(Ref<Window> win)
+  {
+
+    // Create a basic window
+    overlay = Overlay::Create(win, win->width(), win->height(), 0, 0);
+
+    // Load its content from file
+    // All the files must be put into the assets folder, then you can create other subdirectories and all you need
+
+    overlay->view()->LoadURL("file:///index.html");
+    overlay->view()->set_load_listener(this);
+  }
+  virtual void OnResize(uint32_t width, uint32_t height) override
+  {
+    overlay->Resize(width, height);
+  }
+  
+  void RegistrFunctionJs(JSContextRef ctx,std::string namefunction,JSObjectCallAsFunctionCallback fun){
+      JSStringRef name = JSStringCreateWithUTF8CString(namefunction.c_str());
+
+    // Create a garbage-collected JavaScript function that is bound to our
+    // native C callback 'OnButtonClick()'.'
+    
+    JSObjectRef func = JSObjectMakeFunctionWithCallback(ctx, name,
+                                                        fun);
+
+    // Get the global JavaScript object (aka 'window')
+    JSObjectRef globalObj = JSContextGetGlobalObject(ctx);
+
+    // Store our function in the page's global JavaScript object so that it
+    // accessible from the page as 'OnButtonClick()'.
+    JSObjectSetProperty(ctx, globalObj, name, func, 0, 0);
+
+    // Release the JavaScript String we created earlier.
+    JSStringRelease(name);  
+  }
+  
+  void OnDOMReady(View *caller,
+                                  uint64_t frame_id,
+                                  bool is_main_frame,
+                                  const String &url) override
+  {
+
+    // Acquire the JS execution context for the current page.
+    //
+    // This call will lock the execution context for the current
+    // thread as long as the Ref<> is alive.
+    //
+    Ref<JSContext> context = caller->LockJSContext();
+
+    // Get the underlying JSContextRef for use with the
+    // JavaScriptCore C API.
+    JSContextRef ctx = context.get();
+    RegistrFunctionJs(ctx,"CNz",CNz);
+    RegistrFunctionJs(ctx,"CVp",CVp);
+    // Create a JavaScript String containing the name of our callback.
+   
   }
   virtual void OnClose() override {}
   virtual ~UltralightMain() {}
 };
- 
-int main() {
-  
+
+int main()
+{
+
   auto app = App::Create();
- 
+
   // Create a 450 x 700 pixels window, with a title
   auto window = Window::Create(app->main_monitor(), 1000, 700, false,
-    kWindowFlags_Titled);
- 
+                               kWindowFlags_Titled);
+
   window->SetTitle("TelegramGUI");
- 
+
   app->set_window(window);
-    
+
   UltralightMain my_app(window);
   window->set_listener(&my_app);
   // Start the main loop
   app->Run();
- 
+
   return 0;
 }
