@@ -4,15 +4,15 @@ h1{
 .container{
     width: 70%;
     
-    height: 700px;
+    
    margin: 0 auto;  
     margin-top: 10%;
-    height: 70vh;
+    height: 440px;
     display: flex;
     flex-direction:row;
     flex-flow: wrap;
     justify-content: center;
-    overflow-y: hidden;
+    overflow-y: scroll;
     border:solid 1px red;
 }
 .container img{
@@ -27,4 +27,8 @@ h1{
     padding: 10px;
     width: 300px;
     height: 200px;
+}
+.button{
+    display: block;
+    margin:0 auto;
 }
