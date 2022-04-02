@@ -1,2 +1,3 @@
 build/Debug/*
 !build/Debug/DEBUG.txt
+tdlib

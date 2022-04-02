@@ -4,6 +4,7 @@
 #include <AppCore/JSHelpers.h>
 #include <JavaScriptCore/JSRetainPtr.h>
 #include <iostream>
+#include"telegramCloud/header/tdclass.h"
 using namespace ultralight;
 JSValueRef CNz(JSContextRef ctx, JSObjectRef function,
                JSObjectRef thisObject, size_t argumentCount,
@@ -24,14 +25,8 @@ public:
   UltralightMain(Ref<Window> win)
   {
 
-    // Create a basic window
-    overlay = Overlay::Create(win, win->width(), win->height(), 0, 0);
-
-    // Load its content from file
-    // All the files must be put into the assets folder, then you can create other subdirectories and all you need
-
-    overlay->view()->LoadURL("file:///index.html");
-    overlay->view()->set_load_listener(this);
+   SetWindow(win);
+    
   }
   void SetWindow(Ref<Window> win){
     overlay = Overlay::Create(win, win->width(), win->height(), 0, 0);
@@ -41,6 +36,7 @@ public:
 
     overlay->view()->LoadURL("file:///index.html");
     overlay->view()->set_load_listener(this);
+    
   }
   virtual void OnResize(uint32_t width, uint32_t height) override
   {
@@ -187,12 +183,18 @@ public:
     ctx = context.get();
     RegistrFunctionJs("CNz", CNz);
     RegistrFunctionJs("CVp", CVp);
-    CallFunctionJs("CreateBlock",20);
+    CallFunctionJs("CreateBlock",10);
     LoadMedia(0,"img/2.jpg");
+  
     // Create a JavaScript String containing the name of our callback.
   }
-  virtual void OnClose() override {}
-  virtual ~UltralightMain() {}
+  virtual void OnClose() override {
+    
+  }
+  virtual ~UltralightMain() {
+   
+  
+  }
 };
 UltralightMain sa;
 JSValueRef CNz(JSContextRef ctx, JSObjectRef function,
@@ -215,6 +217,7 @@ JSValueRef CVp(JSContextRef ctx, JSObjectRef function,
 
   return JSValueMakeNull(ctx);
 }
+TdCloud cloud;
 int main()
 {
 
@@ -229,6 +232,12 @@ int main()
   app->set_window(window);
   sa.SetWindow(window);
   window->set_listener(&sa);
+  cloud.Login();
+  cloud.ChannelInit();
+  cloud.hist.UpdateChatHistory();
+  cloud.hist.WaitHistory();
+  // example.DownloadManager(3,false);
+  // cloud.DownloadBlock(0,30);
   // Start the main loop
   app->Run();
 
