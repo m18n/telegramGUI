@@ -4,6 +4,7 @@
 #include <AppCore/JSHelpers.h>
 #include <JavaScriptCore/JSRetainPtr.h>
 #include <iostream>
+#include<string>
 #include"telegramCloud/header/tdclass.h"
 using namespace ultralight;
 JSValueRef CNz(JSContextRef ctx, JSObjectRef function,

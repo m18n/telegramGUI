@@ -1,0 +1,15 @@
+﻿{
+  "configurations": [
+    {
+      "name": "x64-Debug",
+      "generator": "Visual Studio 17 2022",
+      "configurationType": "Debug",
+      "inheritEnvironments": [ "msvc_x86_x64" ],
+      "buildRoot": "${projectDir}\\build\\x64\\Debug",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "ctestCommandArgs": "",
+      "cmakeToolchain": "${projectDir}/telegramCloud/vcpkg/scripts/buildsystems/vcpkg.cmake",
+      "cmakeCommandArgs": "-A x64"
+    }
+  ]
+}
