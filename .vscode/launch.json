@@ -4,16 +4,16 @@
     "configurations": [
         
         {
-            "name": "CMAKE Debug",
+            "name": "LINUX CMAKE Debug",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/Debug/TelegramCloudGui",
+            "program": "${workspaceFolder}/build/LINUX/x64/Debug/TelegramCloudGui",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
-            "preLaunchTask": "build_debug",
+            "preLaunchTask": "linux_build_debug",
             "MIMode": "gdb",
             "setupCommands": [
                 {
@@ -24,16 +24,16 @@
             ]
         },
         {
-            "name": "CMAKE Release",
+            "name": "LINUX CMAKE Release",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/Release/TelegramCloudGui",
+            "program": "${workspaceFolder}/build/LINUX/x64/Release/TelegramCloudGui",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
-            "preLaunchTask": "build_release",
+            "preLaunchTask": "linux_build_release",
             "MIMode": "gdb",
             "setupCommands": [
                 {

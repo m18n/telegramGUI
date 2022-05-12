@@ -4,58 +4,58 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build_debug_cmake",
+            "label": "linux_build_debug_cmake",
             "type": "shell",
             "command": "cmake",
             "args": [
                 "-DCMAKE_BUILD_TYPE=Debug",
-                "../../"
+                "${workspaceFolder}"
             ],
             "options": {
-                "cwd": "${workspaceFolder}/build/Debug"
+                "cwd": "${workspaceFolder}/build/LINUX/x64/Debug"
             }
         },
         {
-            "label": "make_debug",
+            "label": "linux_make_debug",
             "type": "shell",
             "command": "make",
             "options": {
-                "cwd": "${workspaceFolder}/build/Debug"
+                "cwd": "${workspaceFolder}/build/LINUX/x64/Debug"
             }
         },
         {
-            "label": "build_debug",
+            "label": "linux_build_debug",
             "dependsOn": [
-                "build_debug_cmake",
-                "make_debug"
+                "linux_build_debug_cmake",
+                "linux_make_debug"
             ],
             
         },
         {
-            "label": "build_release_cmake",
+            "label": "linux_build_release_cmake",
             "type": "shell",
             "command": "cmake",
             "args": [
                 "-DCMAKE_BUILD_TYPE=Release",
-                "../../"
+                "${workspaceFolder}"
             ],
             "options": {
-                "cwd": "${workspaceFolder}/build/Release"
+                "cwd": "${workspaceFolder}/build/LINUX/x64/Release"
             }
         },
         {
-            "label": "make_release",
+            "label": "linux_make_release",
             "type": "shell",
             "command": "make",
             "options": {
-                "cwd": "${workspaceFolder}/build/Release"
+                "cwd": "${workspaceFolder}/build/LINUX/x64/Release"
             }
         },
         {
-            "label": "build_release",
+            "label": "linux_build_release",
             "dependsOn": [
-                "build_release_cmake",
-                "make_release"
+                "linux_build_release_cmake",
+                "linux_make_release"
             ],
             
         },
