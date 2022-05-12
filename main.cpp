@@ -1,8 +1,8 @@
 #include <iostream>
 #include<string>
-#include"telegramCloud/header/tdclass.h"
+
 #include"include/funjs.h"
-TdCloud cloud;
+
 #define WINDOW_WIDTH    900
 #define WINDOW_HEIGHT   600
 int main()
@@ -16,10 +16,9 @@ int main()
   vs.SetWin(window);
   funjs::RegistrFunVServClient(&vs);
   vs.SetTitle("TG CLOUD\n");
-  cloud.Login();
-  cloud.ChannelInit();
-  cloud.hist.UpdateChatHistory();
-  cloud.hist.WaitHistory();
+  
+   //cloud.hist.WaitHistory();
   app->Run();
+
   return 0;
 }

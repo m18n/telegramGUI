@@ -1,4 +1,5 @@
 #include"include/coreviews.h"
+TdCloud details::cloud;
 void  IFunctionJS::RegistrFunctionJs(std::string namefunction, JSObjectCallAsFunctionCallback fun)
 {
     if (ctx != NULL) {

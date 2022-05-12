@@ -1,6 +1,6 @@
 #pragma once
 #include"coreviews.h" 
-class VServClient :public WindowListener, public ViewListener, public LoadListener, public IFunctionJS {
+class VServClient :public WindowListener, public ViewListener, public LoadListener, public IFunctionJS,public CallBackTdCloud {
 public:
 
 	VServClient();
@@ -17,10 +17,12 @@ public:
 		this->title = title;
 		win->SetTitle(title.c_str());
 	}
+	void InitTg();
+	void CallBackLogin() override;
 	~VServClient();
 private:
 	std::string title;
-
+	ultralight::View* views ;
 	RefPtr<Window> win;
 	RefPtr<Overlay> ov;
 };

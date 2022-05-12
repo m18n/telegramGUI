@@ -6,6 +6,8 @@
 #include <JavaScriptCore/JSRetainPtr.h>
 #include <iostream>
 #include<vector>
+#include<thread>
+#include"../telegramCloud/header/tdclass.h"
 using namespace std;
 using namespace ultralight;
 struct functionjs {
@@ -36,4 +38,5 @@ private:
 };
 namespace details {
     std::string GetString(String8 str);
+    extern TdCloud cloud;
 };
