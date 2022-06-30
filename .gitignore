@@ -1,4 +1,2 @@
-build/LINUX/x64/Debug/*
-!build/LINUX/x64/Debug/assets/
-
+build/*
 .vs
